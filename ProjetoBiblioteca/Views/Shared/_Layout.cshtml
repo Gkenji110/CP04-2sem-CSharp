@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema de Biblioteca</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a class="brand" asp-controller="Home" asp-action="Index">📚 Biblioteca</a>
+            <a asp-controller="Livros" asp-action="Index">Livros</a>
+            <a asp-controller="Autores" asp-action="Index">Autores</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        @RenderBody()
+    </div>
+</body>
+</html>

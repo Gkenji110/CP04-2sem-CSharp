@@ -1,0 +1,16 @@
+@model Autor
+
+<h1>@Model.Nome</h1>
+
+<p><strong>Nacionalidade:</strong> @Model.Nacionalidade</p>
+
+<p><strong>Livros:</strong></p>
+<ul>
+    @foreach (var item in Model.AutoresLivros)
+    {
+        <li>@item.Livro.Titulo</li>
+    }
+</ul>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn">Editar</a>
+<a asp-action="Index">Voltar</a>

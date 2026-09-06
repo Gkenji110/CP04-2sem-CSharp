@@ -1,0 +1,36 @@
+@model Livro
+
+<h1>Editar Livro</h1>
+
+<form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label>Título</label>
+        <input asp-for="Titulo" />
+    </div>
+
+    <div class="form-group">
+        <label>Ano de Publicação</label>
+        <input asp-for="AnoPublicacao" type="number" />
+    </div>
+
+    <div class="form-group">
+        <label>Editora</label>
+        <input asp-for="Editora" />
+    </div>
+
+    <div class="form-group">
+        <label>Autores</label>
+        <select name="autoresSelecionados" multiple size="6">
+            @foreach (var autor in (IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.Autores)
+            {
+                <option value="@autor.Value" selected="@autor.Selected">@autor.Text</option>
+            }
+        </select>
+        <small>Segure Ctrl (ou Cmd) para selecionar mais de um autor. Desmarque para desassociar.</small>
+    </div>
+
+    <button type="submit" class="btn">Salvar</button>
+    <a asp-action="Index">Cancelar</a>
+</form>

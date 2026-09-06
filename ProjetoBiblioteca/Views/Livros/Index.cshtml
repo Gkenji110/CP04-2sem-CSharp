@@ -1,0 +1,38 @@
+@model List<Livro>
+
+<h1>Livros</h1>
+
+<a class="btn" asp-action="Create">+ Novo Livro</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Ano</th>
+            <th>Editora</th>
+            <th>Autores</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var livro in Model)
+        {
+            <tr>
+                <td>@livro.Titulo</td>
+                <td>@livro.AnoPublicacao</td>
+                <td>@livro.Editora</td>
+                <td>
+                    @foreach (var item in livro.AutoresLivros)
+                    {
+                        <span class="tag">@item.Autor.Nome</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@livro.Id">Detalhes</a> |
+                    <a asp-action="Edit" asp-route-id="@livro.Id">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@livro.Id">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

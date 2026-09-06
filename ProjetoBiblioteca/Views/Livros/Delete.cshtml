@@ -1,0 +1,17 @@
+@model Livro
+
+<h1>Excluir Livro</h1>
+
+<p>Tem certeza que deseja excluir <strong>@Model.Titulo</strong>?</p>
+<p>Isso também removerá as associações com os seguintes autores:</p>
+<ul>
+    @foreach (var item in Model.AutoresLivros)
+    {
+        <li>@item.Autor.Nome</li>
+    }
+</ul>
+
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+    <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+    <a asp-action="Index">Cancelar</a>
+</form>

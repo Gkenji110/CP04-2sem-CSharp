@@ -1,0 +1,30 @@
+@model Autor
+
+<h1>Novo Autor</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label>Nome</label>
+        <input asp-for="Nome" />
+        <span asp-validation-for="Nome" style="color:red"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Nacionalidade</label>
+        <input asp-for="Nacionalidade" />
+    </div>
+
+    <div class="form-group">
+        <label>Livros</label>
+        <select name="livrosSelecionados" multiple size="6">
+            @foreach (var livro in (IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.Livros)
+            {
+                <option value="@livro.Value">@livro.Text</option>
+            }
+        </select>
+        <small>Segure Ctrl (ou Cmd) para selecionar mais de um livro.</small>
+    </div>
+
+    <button type="submit" class="btn">Salvar</button>
+    <a asp-action="Index">Cancelar</a>
+</form>
