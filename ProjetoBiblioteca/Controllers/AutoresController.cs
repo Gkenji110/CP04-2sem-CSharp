@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjetoBiblioteca.Dados;
 using ProjetoBiblioteca.Models;
-using ProjetoBiblioteca.Infraestrutura.Observabilidade; // [NOVO] OpenTelemetry
-using ProjetoBiblioteca.Aplicacao.Servicos; // [NOVO] Camada de Servico
+using ProjetoBiblioteca.Infraestrutura.Observabilidade; // OpenTelemetry
+using ProjetoBiblioteca.Aplicacao.Servicos; // Camada de Servico
 
 namespace ProjetoBiblioteca.Controllers
 {
@@ -12,8 +12,8 @@ namespace ProjetoBiblioteca.Controllers
     {
         // Variável que representa o banco
         private readonly AppDbContext _context;
-        private readonly ILogger<AutoresController> _logger; // [NOVO] Logging estruturado
-        private readonly IAutorServico _autorServico; // [NOVO] Camada de Servico (testavel via Mock)
+        private readonly ILogger<AutoresController> _logger; // Logging estruturado
+        private readonly IAutorServico _autorServico; // Camada de Servico (testavel via Mock)
 
         public AutoresController(AppDbContext context, ILogger<AutoresController> logger, IAutorServico autorServico)
         {
@@ -69,7 +69,7 @@ namespace ProjetoBiblioteca.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Autor autor, int[] livrosSelecionados)
         {
-            // [NOVO] Inicia um Span customizado via ActivitySource para rastreamento distribuido
+            // Inicia um Span customizado via ActivitySource para rastreamento distribuido
             using var activity = AplicacaoMetricas.ActivitySourceAplicacao.StartActivity("CriarAutor");
             activity?.SetTag("autor.nome", autor?.Nome);
 
@@ -85,7 +85,7 @@ namespace ProjetoBiblioteca.Controllers
 
             try
             {
-                // [ALTERADO] Salva o autor atraves da camada de Servico (aplica as regras de negocio)
+                // Salva o autor atraves da camada de Servico (aplica as regras de negocio)
                 _autorServico.Criar(autor);
             }
             catch (ArgumentException ex)
@@ -101,7 +101,7 @@ namespace ProjetoBiblioteca.Controllers
 
             _logger.LogInformation("Autor {AutorId} ({Nome}) cadastrado com sucesso.", autor.Id, autor.Nome);
 
-            // [NOVO] Incrementa a metrica de sucesso e finaliza o Span com o id gerado
+            // Incrementa a metrica de sucesso e finaliza o Span com o id gerado
             activity?.SetTag("autor.id", autor.Id);
             AplicacaoMetricas.AutoresCriadosContador.Add(1,
                 new KeyValuePair<string, object>("status", "sucesso"));
@@ -233,7 +233,7 @@ namespace ProjetoBiblioteca.Controllers
             }
 
             _context.SaveChanges();
-            _logger.LogInformation("Autor {AutorId} removido com sucesso.", id); // [NOVO]
+            _logger.LogInformation("Autor {AutorId} removido com sucesso.", id);
 
             return RedirectToAction("Index");
         }

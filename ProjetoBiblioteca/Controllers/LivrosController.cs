@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjetoBiblioteca.Dados;
 using ProjetoBiblioteca.Models;
-using ProjetoBiblioteca.Infraestrutura.Observabilidade; // [NOVO] OpenTelemetry
-using ProjetoBiblioteca.Aplicacao.Servicos; // [NOVO] Camada de Servico
+using ProjetoBiblioteca.Infraestrutura.Observabilidade; // OpenTelemetry
+using ProjetoBiblioteca.Aplicacao.Servicos; // Camada de Servico
 
 namespace ProjetoBiblioteca.Controllers
 {
@@ -12,8 +12,8 @@ namespace ProjetoBiblioteca.Controllers
     {
         // Variável que representa o banco
         private readonly AppDbContext _context;
-        private readonly ILogger<LivrosController> _logger; // [NOVO] Logging estruturado
-        private readonly ILivroServico _livroServico; // [NOVO] Camada de Servico (testavel via Mock)
+        private readonly ILogger<LivrosController> _logger; // Logging estruturado
+        private readonly ILivroServico _livroServico; // Camada de Servico (testavel via Mock)
 
         public LivrosController(AppDbContext context, ILogger<LivrosController> logger, ILivroServico livroServico)
         {
@@ -69,7 +69,7 @@ namespace ProjetoBiblioteca.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Livro livro, int[] autoresSelecionados)
         {
-            // [NOVO] Inicia um Span customizado via ActivitySource para rastreamento distribuido
+            // Inicia um Span customizado via ActivitySource para rastreamento distribuido
             using var activity = AplicacaoMetricas.ActivitySourceAplicacao.StartActivity("CriarLivro");
             activity?.SetTag("livro.titulo", livro?.Titulo);
 
@@ -85,7 +85,7 @@ namespace ProjetoBiblioteca.Controllers
 
             try
             {
-                // [ALTERADO] Salva o livro atraves da camada de Servico (aplica as regras de negocio)
+                // Salva o livro atraves da camada de Servico (aplica as regras de negocio)
                 _livroServico.Criar(livro);
             }
             catch (ArgumentException ex)
@@ -101,7 +101,7 @@ namespace ProjetoBiblioteca.Controllers
 
             _logger.LogInformation("Livro {LivroId} ({Titulo}) cadastrado com sucesso.", livro.Id, livro.Titulo);
 
-            // [NOVO] Incrementa a metrica de sucesso e finaliza o Span com o id gerado
+            // Incrementa a metrica de sucesso e finaliza o Span com o id gerado
             activity?.SetTag("livro.id", livro.Id);
             AplicacaoMetricas.LivrosCriadosContador.Add(1,
                 new KeyValuePair<string, object>("status", "sucesso"));
@@ -233,7 +233,7 @@ namespace ProjetoBiblioteca.Controllers
             }
 
             _context.SaveChanges();
-            _logger.LogInformation("Livro {LivroId} removido com sucesso.", id); // [NOVO]
+            _logger.LogInformation("Livro {LivroId} removido com sucesso.", id);
 
             return RedirectToAction("Index");
         }

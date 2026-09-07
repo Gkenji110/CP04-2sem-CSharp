@@ -1,19 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using ProjetoBiblioteca.Dados;
-using ProjetoBiblioteca.Infraestrutura.Health; // [NOVO] Health Checks
-using ProjetoBiblioteca.Aplicacao.Middlewares; // [NOVO] Correlation ID
-using Serilog; // [NOVO] Logging estruturado
-using ProjetoBiblioteca.Infraestrutura.Observabilidade; // [NOVO] OpenTelemetry
+using ProjetoBiblioteca.Infraestrutura.Health; // Health Checks
+using ProjetoBiblioteca.Aplicacao.Middlewares; // Correlation ID
+using Serilog; // Logging estruturado
+using ProjetoBiblioteca.Infraestrutura.Observabilidade; // OpenTelemetry
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using ProjetoBiblioteca.Dominio.Interfaces; // [NOVO] Camada de Repositorio
+using ProjetoBiblioteca.Dominio.Interfaces; // Camada de Repositorio
 using ProjetoBiblioteca.Infraestrutura.Repositorios;
-using ProjetoBiblioteca.Aplicacao.Servicos; // [NOVO] Camada de Servico
+using ProjetoBiblioteca.Aplicacao.Servicos; // Camada de Servico
 
 var builder = WebApplication.CreateBuilder(args);
 
-// [NOVO] Configuracao do Serilog como provedor global de logs da aplicacao
+// Configuracao do Serilog como provedor global de logs da aplicacao
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .Enrich.FromLogContext()
@@ -36,17 +36,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddControllersWithViews();
 
-// [NOVO] Registro das camadas de Repositorio e Servico (permitem testes unitarios com Mock)
+// Registro das camadas de Repositorio e Servico (permitem testes unitarios com Mock)
 builder.Services.AddScoped<IAutorRepositorio, AutorRepositorio>();
 builder.Services.AddScoped<ILivroRepositorio, LivroRepositorio>();
 builder.Services.AddScoped<IAutorServico, AutorServico>();
 builder.Services.AddScoped<ILivroServico, LivroServico>();
 
-// [NOVO] Registro do Health Check customizado que valida a conexao com o Oracle
+// Registro do Health Check customizado que valida a conexao com o Oracle
 builder.Services.AddHealthChecks()
     .AddCheck<BancoDadosHealthCheck>("banco_dados");
 
-// [NOVO] Configuracao e registro do OpenTelemetry (Tracing e Metricas)
+// Configuracao e registro do OpenTelemetry (Tracing e Metricas)
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService(AplicacaoMetricas.NomeServico))
     .WithTracing(tracing =>
@@ -81,11 +81,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-// [NOVO][ALTERADO] Le/gera o Correlation ID PRIMEIRO, para que ele tambem apareca
+// Le/gera o Correlation ID primeiro, para que ele tambem apareca
 // na linha de log automatica do UseSerilogRequestLogging logo abaixo
 app.UseMiddleware<CorrelationIdMiddleware>();
 
-// [NOVO] Loga automaticamente cada requisicao HTTP recebida (metodo, rota, status, duracao)
+// Loga automaticamente cada requisicao HTTP recebida (metodo, rota, status, duracao)
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
@@ -95,7 +95,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-// [NOVO] Endpoint nativo de diagnosticos de saude da aplicacao
+// Endpoint nativo de diagnosticos de saude da aplicacao
 app.MapHealthChecks("/health");
 
 app.MapControllerRoute(
