@@ -200,3 +200,12 @@ ProjetoBiblioteca.Tests.Unit/
   Dominio/AutorTests.cs, LivroTests.cs
   Aplicacao/AutorServicoTests.cs, LivroServicoTests.cs
 ```
+
+## Dados de exemplo
+
+Consulta direta no Oracle (via SQL Developer) mostrando os registros
+cadastrados nas tabelas `LIVROS` e `AUTORES`:
+
+![Tabela LIVROS](docs/tabela-livros.png)
+
+![Tabela AUTORES](docs/tabela-autores.png)
