@@ -9,6 +9,7 @@ rastreabilidade (Serilog + Correlation ID), observabilidade corporativa
 
 ## Sumário
 
+- [Vídeo de demonstração](#vídeo-de-demonstração)
 - [Arquitetura](#arquitetura)
 - [Pré-requisitos](#pré-requisitos)
 - [Configuração](#configuração)
@@ -19,6 +20,10 @@ rastreabilidade (Serilog + Correlation ID), observabilidade corporativa
 - [Observabilidade com OpenTelemetry](#observabilidade-com-opentelemetry)
 - [Testes unitários](#testes-unitários)
 - [Estrutura de pastas](#estrutura-de-pastas)
+
+## Vídeo de demonstração
+
+https://youtu.be/0D8JwqmBoJg
 
 ## Arquitetura
 
@@ -123,7 +128,7 @@ O logging é feito com **Serilog**, configurado em `Program.cs`:
 
 Exemplo de linha de log, com o Correlation ID entre colchetes:
 ```
-2026-09-07 00:20:20.155 -03:00 [INF] [8beb715d-1905-4963-a860-d66e6e28b7af] HTTP GET / responded 200 in 11.1981 ms
+2026-09-08 00:20:20.155 -03:00 [INF] [8beb715d-1905-4963-a860-d66e6e28b7af] HTTP GET / responded 200 in 11.1981 ms
 ```
 
 ## Observabilidade com OpenTelemetry
